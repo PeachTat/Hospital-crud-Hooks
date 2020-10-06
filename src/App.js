@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Container from './components/Container/Container';
+import SearchPanel from './components/SearchPanel/SearchPanel';
+import HosList from './components/HosList/HosList';
+import ModalWindow from './components/ModalWindow/ModalWindow';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const App = () => {
+    const [modal, setModal] = useState(false);
+    const [hospitals, setHospitals] = useState([])
+
+    const openWindow = () => {
+        setModal(true)
+    }
+
+    const closeWindow = () => {
+        setModal(false)
+    }
+
+    return (
+        <>
+            <Container>
+                <SearchPanel onClick={openWindow}/>
+                <HosList hospitals={hospitals}/>
+            </Container>
+            {
+                modal && (
+                    <ModalWindow onClose={closeWindow} setHospitals={setHospitals}/>
+                )
+            }
+        </>
+    )
 }
-
 export default App;

@@ -1,0 +1,13 @@
+button {
+    display: block;
+    margin: 30px auto;
+    padding: 15px 30px;
+    border-radius: 15px;
+    border: none;
+    background-color: cornflowerblue;
+    color: #ffffff;
+
+    &:hover {
+        background-color: darkcyan;
+    }
+}
