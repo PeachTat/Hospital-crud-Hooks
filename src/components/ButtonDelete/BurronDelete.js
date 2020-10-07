@@ -1,9 +1,9 @@
 import React from 'react';
 import s from './ButtonDelete.module.scss';
 
-const ButtonDelete = () => {
+const ButtonDelete = ({onClick}) => {
     return (
-        <button className={s.button}>Удалить</button>
+        <button className={s.button} onClick={onClick}>Удалить</button>
     )
 }
 

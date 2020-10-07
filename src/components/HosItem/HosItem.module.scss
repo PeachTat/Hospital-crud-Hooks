@@ -1,0 +1,56 @@
+.data {
+    padding: 30px;
+    text-align: center;
+    background-color: #ccd0e8;
+}
+
+.popUp {
+    max-width: 300px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    transform: translate(0%, 100%);
+    z-index: 10;
+    background-color: #e8b4d4;
+    min-height: 200px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+}
+
+.rowTable {
+    display: flex;
+
+    button {
+        margin-right: 10px;
+    }
+}
+
+.rowTableWrap {
+    position: relative;
+}
+
+.rowTableItem {
+    max-width: 33.3333%;
+    width: 100%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    text-align: center;
+    background-color: #e8b4d4;
+    border-bottom: 1px solid grey;
+    border-right: 1px solid grey;
+    cursor: pointer;
+
+    &:last-child {
+        border-right: none;
+    }
+
+    &:nth-child(2n+1) {
+    background: #bec6ff; /* Цвет фона */
+   } 
+
+}

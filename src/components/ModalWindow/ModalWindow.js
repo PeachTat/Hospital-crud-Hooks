@@ -3,7 +3,7 @@ import s from './ModalWindow.module.scss';
 import ButtonAdd from '../ButtonAdd/ButtonAdd';
 import uuid from 'uuid/dist/v4'
 
-const ModalWindow = ({onClose, setHospitals}) => {
+const ModalWindow = ({onClose, setHospitals, activeId, setActiveId, hospitals}) => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
@@ -23,25 +23,54 @@ const ModalWindow = ({onClose, setHospitals}) => {
         }
     }
 
-    const addHospital = () => {
-        setHospitals((prev)=> prev.concat({
-            name: name,
-            address: address,
-            phone: phone,
-            id: uuid()
-        }))
+    const editOrAddHospital = () => {
+        if(activeId) {
+            const newHospitals = hospitals.map((el) => {
+                if(el.id === activeId) {
+                    return {
+                        ...el,
+                        name:name,
+                        address: address,
+                        phone: phone
+                    }
+                } else {
+                    return el
+                }
+            })
+            setHospitals(newHospitals)
+        } else {
+            setHospitals((prev)=> prev.concat({
+                name: name,
+                address: address,
+                phone: phone,
+                id: uuid()
+            }))
+
+        }
         onClose()
     }
+
+    
+    useEffect(()=> {
+        if(!activeId) {
+            return
+        }
+        const hospital = hospitals.find((el) => el.id === activeId);
+        console.log(hospital);
+        setName(hospital.name);
+        setPhone(hospital.phone);
+        setAddress(hospital.address)
+    }, [activeId, hospitals])
 
     return (
         <div className={s.modal}>
             <div className={s.modalWindow}>
                 <form>
-                    <input name='name' type="text" placeholder="Наименование учреждения" onChange={onInputChange}/>
-                    <input name='address' type="text" placeholder='Адрес' onChange={onInputChange}/>
-                    <input name='phone'  type="text" placeholder="Телефон" onChange={onInputChange}/>
+                    <input name='name' value={name} type="text" placeholder="Наименование учреждения" onChange={onInputChange}/>
+                    <input name='address' value={address} type="text" placeholder='Адрес' onChange={onInputChange}/>
+                    <input name='phone' value={phone}  type="text" placeholder="Телефон" onChange={onInputChange}/>
                     <div className={s.row}>
-                       <ButtonAdd onClick={addHospital} />
+                       <ButtonAdd onClick={editOrAddHospital} />
                         <button className={s.close} type='button' onClick={onClose}>Отмена</button>
                     </div>
                 </form>
