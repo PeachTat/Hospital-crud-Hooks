@@ -9,7 +9,8 @@ import ModalWindow from './components/ModalWindow/ModalWindow';
 const App = () => {
     const [modal, setModal] = useState(false);
     const [hospitals, setHospitals] = useState([]);
-    const [activeId, setActiveId] = useState(null)
+    const [activeId, setActiveId] = useState(null);
+    const [value, setValue] = useState('');
 
     //Сохранение данных в localStorage//
 
@@ -46,12 +47,16 @@ const App = () => {
         setActiveId(id)
     }
 
+    const getValueSearchPanel = (event) => {
+        setValue(event.target.value)
+    }
+
 
     return (
         <>
             <Container>
-                <SearchPanel onClick={openWindow}/>
-                <HosList hospitals={hospitals} onDelete={onDelete} editWindow={editWindow}/>
+                <SearchPanel onClick={openWindow} getValueSearchPanel={getValueSearchPanel} value={value}/>
+                <HosList hospitals={hospitals} onDelete={onDelete} editWindow={editWindow} value={value}/>
             </Container>
             {
                 modal && (

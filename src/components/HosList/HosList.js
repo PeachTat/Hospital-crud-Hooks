@@ -2,7 +2,12 @@ import React from 'react';
 import s from './HosList.module.scss';
 import HosItem from '../HosItem/HosItem';
 
-const HosList = ({hospitals, onDelete, editWindow}) => {
+const HosList = ({hospitals, onDelete, editWindow, value}) => {
+
+    const newArr = value !== ''
+        ? hospitals.filter(({name}) => name.toLowerCase().includes(value.toLowerCase()))
+        : hospitals
+
     return (
         <div className={s.wrap}>
             <div className={s.headers}>
@@ -18,7 +23,7 @@ const HosList = ({hospitals, onDelete, editWindow}) => {
             </div>
             <div className={s.table}>
                 {
-                    hospitals.map((el)=> {
+                    newArr.map((el)=> {
                         return (
                             <HosItem 
                                 key={el.id} 
