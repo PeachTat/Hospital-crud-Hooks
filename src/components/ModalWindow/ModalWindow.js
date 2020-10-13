@@ -6,7 +6,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField'
 
 const nameHospital = [
-    {title: 'Казанская психиатрическая больница специализированного типа с интенсивным наблюдением' },
+    { title: 'Казанская психиатрическая больница специализированного типа с интенсивным наблюдением' },
     { title: 'Казанский военный госпиталь' },
     { title: 'Государственная больница Нью-Амстердама' },
     { title: 'Государственная больница Дэнверса' },
@@ -43,7 +43,7 @@ const addressHospital = [
 ]
 
 
-const ModalWindow = ({onClose, setHospitals, activeId, setActiveId, hospitals}) => {
+const ModalWindow = ({ onClose, setHospitals, activeId, setActiveId, hospitals }) => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
@@ -51,47 +51,47 @@ const ModalWindow = ({onClose, setHospitals, activeId, setActiveId, hospitals}) 
 
 
     const onInputChange = (event) => {
-        const {name, value} = event.target;
-        
+        const { name, value } = event.target;
+
         if (name === 'name') {
             setName(value);
         }
         if (name === 'address') {
             setAddress(value);
-        } 
-        if(name === 'phone') {
+        }
+        if (name === 'phone') {
             setPhone(value)
         }
         setErrorInput(false)
     }
 
     const checkEmpty = () => {
-        if(name === '') {
-            return true
-        } 
-        if(address === '') {
+        if (name === '') {
             return true
         }
-        if(phone === '') {
+        if (address === '') {
+            return true
+        }
+        if (phone === '') {
             return true
         } else {
             return false
         }
     }
-    
+
     const editOrAddHospital = () => {
         const isEmty = checkEmpty()
         if (isEmty) {
             setErrorInput(true)
-            return 
-        } 
-       
-        if(activeId) {
+            return
+        }
+
+        if (activeId) {
             const newHospitals = hospitals.map((el) => {
-                if(el.id === activeId) {
+                if (el.id === activeId) {
                     return {
                         ...el,
-                        name:name,
+                        name: name,
                         address: address,
                         phone: phone
                     }
@@ -101,7 +101,7 @@ const ModalWindow = ({onClose, setHospitals, activeId, setActiveId, hospitals}) 
             })
             setHospitals(newHospitals)
         } else {
-            setHospitals((prev)=> prev.concat({
+            setHospitals((prev) => prev.concat({
                 name: name,
                 address: address,
                 phone: phone,
@@ -111,9 +111,13 @@ const ModalWindow = ({onClose, setHospitals, activeId, setActiveId, hospitals}) 
         onClose()
     }
 
-    
-    useEffect(()=> {
-        if(!activeId) {
+    const stopAction = (event) => {
+        event.stopPropagation()
+    }
+
+
+    useEffect(() => {
+        if (!activeId) {
             return
         }
         const hospital = hospitals.find((el) => el.id === activeId);
@@ -121,82 +125,84 @@ const ModalWindow = ({onClose, setHospitals, activeId, setActiveId, hospitals}) 
         setName(hospital.name);
         setPhone(hospital.phone);
         setAddress(hospital.address)
-        
+
     }, [activeId, hospitals])
 
     return (
-        <div className={s.modal}>
-            <div className={s.modalWindow}>
-                <form>
-                    <Autocomplete
-                        options={nameHospital}
-                        getOptionLabel={(option) => option.title}
-                        style={{ width:  400}}
-                        onChange={(event, value)=> setName(value.title)}
-                        renderInput={(params) => 
-                            <TextField {...params} 
-                                onChange={onInputChange}
-                                label="Наименование учреждения" 
-                                variant="outlined" 
-                                name='name' 
-                                value={name}
-                                style={{marginBottom: 30}}
-                            />
-                        }
-                    />
-                    {
-                        errorInput && (<div className={s.error}>
-                            <p>Заполните поле!</p>
+        <>
+            <div className={s.back} onClick={onClose}>
+                <div className={s.modalWindow} onClick={stopAction}>
+                    <form>
+                        <Autocomplete
+                            options={nameHospital}
+                            getOptionLabel={(option) => option.title}
+                            style={{ width: 400 }}
+                            value={{ title: name }}
+                            onChange={(event, value) => setName(value.title)}
+                            renderInput={(params) =>
+                                <TextField {...params}
+                                    onChange={onInputChange}
+                                    label="Наименование учреждения"
+                                    variant="outlined"
+                                    name='name'
+                                    style={{ marginBottom: 30 }}
+                                />
+                            }
+                        />
+                        {
+                            errorInput && (<div className={s.error}>
+                                <p>Заполните поле!</p>
+                            </div>
+                            )}
+                        <Autocomplete
+                            options={addressHospital}
+                            getOptionLabel={(option) => option.title}
+                            style={{ width: 400 }}
+                            value={{ title: address }}
+                            onChange={(event, value) => setAddress(value.title)}
+                            renderInput={(params) =>
+                                <TextField {...params}
+                                    label="Адрес"
+                                    variant="outlined"
+                                    name='address'
+                                    style={{ marginBottom: 30 }}
+                                    onChange={onInputChange}
+                                />
+                            }
+                        />
+                        {
+                            errorInput && (<div className={s.error}>
+                                <p>Заполните поле!</p>
+                            </div>
+                            )}
+                        <Autocomplete
+                            options={phoneHospital}
+                            getOptionLabel={(option) => option.title}
+                            style={{ width: 400 }}
+                            value={{ title: phone }}
+                            onChange={(event, value) => setPhone(value.title)}
+                            renderInput={(params) =>
+                                <TextField {...params}
+                                    label="Телефон"
+                                    variant="outlined"
+                                    name='phone'
+                                    onChange={onInputChange}
+                                />
+                            }
+                        />
+                        {
+                            errorInput && (<div className={s.error}>
+                                <p>Заполните поле!</p>
+                            </div>
+                            )}
+                        <div className={s.row}>
+                            <ButtonAdd onClick={editOrAddHospital} disabled={errorInput} />
+                            <button className={s.close} type='button' onClick={onClose}>Отмена</button>
                         </div>
-                    )}
-                    <Autocomplete
-                        options={addressHospital}
-                        getOptionLabel={(option) => option.title}
-                        style={{ width: 400 }}
-                        onChange={(event, value) => setAddress(value.title)}
-                        renderInput={(params) =>
-                            <TextField {...params}
-                                label="Адрес"
-                                variant="outlined"
-                                name='address'
-                                value={address}
-                                style={{ marginBottom: 30 }}
-                                onChange={onInputChange}
-                            />
-                        }
-                    />
-                    {
-                        errorInput && (<div className={s.error}>
-                            <p>Заполните поле!</p>
-                        </div>
-                    )}                    
-                    <Autocomplete
-                        options={phoneHospital}
-                        getOptionLabel={(option) => option.title}
-                        style={{ width: 400 }}
-                        onChange={(event, value) => setPhone(value.title)}
-                        renderInput={(params) =>
-                            <TextField {...params}
-                                label="Телефон"
-                                variant="outlined"
-                                name='phone'
-                                value={phone}
-                                onChange={onInputChange}
-                            />
-                        }
-                    />
-                    {
-                        errorInput && (<div className={s.error}>
-                            <p>Заполните поле!</p>
-                        </div>
-                        )}
-                    <div className={s.row}>
-                       <ButtonAdd onClick={editOrAddHospital} disabled={errorInput}/>
-                        <button className={s.close} type='button' onClick={onClose}>Отмена</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 

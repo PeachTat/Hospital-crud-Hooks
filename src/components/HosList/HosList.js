@@ -2,10 +2,11 @@ import React from 'react';
 import s from './HosList.module.scss';
 import HosItem from '../HosItem/HosItem';
 
-const HosList = ({hospitals, onDelete, editWindow, value}) => {
+const HosList = ({ hospitals, onDelete, editWindow, value }) => {
 
     const newArr = value !== ''
-        ? hospitals.filter(({name}) => name.toLowerCase().includes(value.toLowerCase()))
+        ? hospitals.filter(({ name, phone, address }) => name.toLowerCase().includes(value.toLowerCase())
+            || address.toLowerCase().includes(value.toLowerCase()) || phone.toLowerCase().includes(value.toLowerCase()))
         : hospitals
 
     return (
@@ -23,15 +24,15 @@ const HosList = ({hospitals, onDelete, editWindow, value}) => {
             </div>
             <div className={s.table}>
                 {
-                    newArr.map((el)=> {
+                    newArr.map((el) => {
                         return (
-                            <HosItem 
-                                key={el.id} 
-                                name={el.name} 
-                                address={el.address} 
+                            <HosItem
+                                key={el.id}
+                                name={el.name}
+                                address={el.address}
                                 phone={el.phone}
-                                id={el.id} 
-                                onDelete={onDelete} 
+                                id={el.id}
+                                onDelete={onDelete}
                                 editWindow={editWindow}
                             />
                         )
